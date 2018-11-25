@@ -71,20 +71,20 @@ public class Reflection extends PApplet {
 //			double height = -1.5 + random.nextDouble() * (1.5 - (-1.5));
 //			moversLeft[i] = new Mover((float)width, (float)height);
 //		}
-		mRightHand = new BodyPart(this, 3);
-		mLeftHand = new BodyPart(this, 3);
+		mRightHand = new BodyPart(this, 5);
+		mLeftHand = new BodyPart(this, 5);
 		mRightShoulder = new BodyPart(this, 5);
 		mLeftShoulder = new BodyPart(this, 5);
-		mRightHip = new BodyPart(this, 4);
-		mLeftHip = new BodyPart(this, 4);
-		mHead = new BodyPart(this, 5);
-		mLeftFoot = new BodyPart(this, 3);
-		mRightFoot = new BodyPart(this, 3);
+		mRightHip = new BodyPart(this, 5);
+		mLeftHip = new BodyPart(this, 5);
+		mHead = new BodyPart(this, 10);
+		mLeftFoot = new BodyPart(this, 5);
+		mRightFoot = new BodyPart(this, 5);
 		mSpineShoulder = new BodyPart(this, 6);
 		mSpineBase = new BodyPart(this, 6);
 		mSpineMid = new BodyPart(this, 6);
-		mRightKnee = new BodyPart(this,3);
-		mLeftKnee = new BodyPart(this,3);
+		mRightKnee = new BodyPart(this,5);
+		mLeftKnee = new BodyPart(this,5);
 	}
 	public void setup(){
 
@@ -114,9 +114,9 @@ public class Reflection extends PApplet {
 	public void draw(){
 		setScale(.5f);
 		noStroke();
-		//background(200,200,200);
-		fill(255,10);
-		rect(-2,(float)-1.3,4,3);
+		background(255,255,255);
+		//fill(255,10);
+		//rect(-2,(float)-1.3,4,3);
 //		KinectBodyData bodyData = kinectReader.getMostRecentData();
 		KinectBodyData bodyData = kinectReader.getNextData();
 		if(bodyData == null) return;
@@ -139,20 +139,33 @@ public class Reflection extends PApplet {
 			fill(255,255,255);
 			noStroke();
 			
-			mRightHand.updateMovers(handRight);
-			mLeftHand.updateMovers(handLeft);
-			mRightShoulder.updateMovers(shoulderRight);
-			mLeftShoulder.updateMovers(shoulderLeft);
-			mRightHip.updateMovers(hipRight);
-			mLeftHip.updateMovers(hipLeft);
+			drawIfValid(handRight);
+			drawIfValid(shoulderRight);
+			
+			//mRightHand.updateMovers(handRight);
+			mLeftHand.updateMovers(handLeft, shoulderLeft);
+			mLeftShoulder.updateMovers(handLeft, shoulderLeft);
+			mRightHand.updateMovers(handRight, shoulderRight);
+			mRightShoulder.updateMovers(handRight, shoulderRight);
+			mLeftFoot.updateMovers(footLeft,hipLeft);
+			mLeftHip.updateMovers(footLeft,hipLeft);
+			mRightFoot.updateMovers(footRight,hipRight);
+			mRightHip.updateMovers(footRight,hipRight);
+			mSpineMid.updateMovers(spineShoulder, spineMid);
+			mSpineShoulder.updateMovers(spineShoulder, spineMid);
+			//mLeftHand.updateMovers(handLeft);
+			//mRightShoulder.updateMovers(shoulderRight);
+			//mLeftShoulder.updateMovers(shoulderLeft);
+			//mRightHip.updateMovers(hipRight);
+			//mLeftHip.updateMovers(hipLeft);
 			mHead.updateMovers(head);
-			mSpineShoulder.updateMovers(spineShoulder);
-			mSpineBase.updateMovers(spineBase);
-			mSpineMid.updateMovers(spineMid);
-			mLeftFoot.updateMovers(footLeft);
-			mRightFoot.updateMovers(footRight);
-			mRightKnee.updateMovers(kneeRight);
-			mLeftKnee.updateMovers(kneeLeft);
+			//mSpineShoulder.updateMovers(spineShoulder);
+			//mSpineBase.updateMovers(spineBase);
+			//mSpineMid.updateMovers(spineMid);
+			//mLeftFoot.updateMovers(footLeft);
+			//mRightFoot.updateMovers(footRight);
+			//mRightKnee.updateMovers(kneeRight);
+			//mLeftKnee.updateMovers(kneeLeft);
 			}
 			}
 
@@ -164,6 +177,7 @@ public class Reflection extends PApplet {
 	 */
 	public void drawIfValid(PVector vec) {
 		if(vec != null) {
+			fill(255,0,0);
 			ellipse(vec.x, vec.y, .1f,.1f);
 		}
 

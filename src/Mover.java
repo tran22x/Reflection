@@ -12,19 +12,22 @@ public class Mover {
 	  float topspeed;
 	  private Random random = new Random();
 	  private PApplet sketch;
+	  
+	  public PVector getLocation () {
+		  return location;
+	  }
 
 	  Mover(PApplet sketch, float width, float height) {
 	    location = new PVector(width,height);
 	    this.sketch =sketch;
 	    velocity = new PVector(0,0);
-	    topspeed = (float)0.07;
+	    topspeed = (float)0.04;
 	    fire = sketch.loadImage("fire.png");
 	  }
 	  
 	  public void update(PVector v1, PVector v2) {
-		  float x = v1.x - v2.x;
-		  float y = v1.y - v2.y;
-		  update(x,y);
+		 PVector combined = v1.add(v2);
+		  update(combined.x,combined.y);
 	  }
 
 	  public void update(float x, float y) {
@@ -35,7 +38,6 @@ public class Mover {
 	    dir.mult((float)0.01);       // Scale 
 	    acceleration = dir;  // Set to acceleration
 
-	    // Motion 101!  Velocity changes by acceleration.  Location changes by velocity.
 	    velocity.add(acceleration);
 	    velocity.limit(topspeed);
 	    location.add(velocity);
@@ -44,8 +46,8 @@ public class Mover {
 	  public void display() {
 	    sketch.noStroke();
 	    sketch.fill(0);
-	    sketch.image(fire,location.x,location.y, 0.1f, 0.1f);
-	    //sketch.ellipse(location.x,location.y,.02f,.02f);
+	    //sketch.image(fire,location.x,location.y, 0.1f, 0.1f);
+	    sketch.ellipse(location.x,location.y,.02f,.02f);
 	  }
 	  
 	  public void updateRandom(PVector v, float dt) {
